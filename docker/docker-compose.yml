@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  apache:
+    container_name: apache_devops_homework
+    image: httpd:2.4.54-alpine #https://hub.docker.com/_/httpd
+    ports: 
+      - "8080:80"
+    volumes:
+      - ./public-html:/usr/local/apache2/htdocs
+
+  curlbox:
+    container_name: curlbox
+    # image: alpine:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/mylogs
+    # command: sh -c "curl -v apache_devops_homework:80 > /mylogs/Readme.md"
+    command: sh -c "curl -v apache_devops_homework:80"
+    depends_on:
+      - apache
